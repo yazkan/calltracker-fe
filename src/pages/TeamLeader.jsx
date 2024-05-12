@@ -77,7 +77,7 @@ function TeamLeader() {
             <label htmlFor="">Sicil No: </label>
             <label className="infoLabel">2313123</label>
           </div>
-          <h2>İtiraz Listesi: </h2>
+          <h2>Prim İtiraz Listesi: </h2>
           <div className="title">
             <table>
               <thead>
@@ -98,7 +98,7 @@ function TeamLeader() {
                   <td>mart</td>
                   <td>Bekliyor</td>
                   <td>
-                    <button onClick={showModal}>İtirazı Cevapla</button>
+                    <button onClick={showModal}>İtiraz Cevapla</button>
                   </td>
                 </tr>
                 <tr>
@@ -108,7 +108,7 @@ function TeamLeader() {
                   <td>nisan</td>
                   <td>Bekliyor</td>
                   <td>
-                    <button onClick={showModal}>İtirazı Cevapla</button>
+                    <button onClick={showModal}>İtiraz Cevapla</button>
                   </td>
                 </tr>
               </tbody>
