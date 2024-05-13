@@ -5,11 +5,11 @@ function Assistant() {
   const navigate = useNavigate();
 
   const handleClickOnCallListBtn = () => {
-    navigate("/");
+    navigate("/assistantcalllist");
   };
 
-  const handleClickOnMountlyBonusListBtn = () => {
-    navigate("/");
+  const handleClickOnMontlyBonusListBtn = () => {
+    navigate("/montlybonuslist");
   };
 
   const handleClickOnBonusDisapprovalListBtn = () => {
@@ -34,7 +34,7 @@ function Assistant() {
             <button onClick={handleClickOnCallListBtn} type="submit">
               Müşteri Çağrı Listesi Menüsü
             </button>
-            <button onClick={handleClickOnMountlyBonusListBtn} type="submit">
+            <button onClick={handleClickOnMontlyBonusListBtn} type="submit">
               Aylık Prim Listesi Menüsü
             </button>
             <button
