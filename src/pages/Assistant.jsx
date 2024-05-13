@@ -1,6 +1,21 @@
+import { useNavigate } from "react-router-dom";
 import "./Assistant.scss";
 
 function Assistant() {
+  const navigate = useNavigate();
+
+  const handleClickOnCallListBtn = () => {
+    navigate("/");
+  };
+
+  const handleClickOnMountlyBonusListBtn = () => {
+    navigate("/");
+  };
+
+  const handleClickOnBonusDisapprovalListBtn = () => {
+    navigate("/bonusdisapp");
+  };
+
   return (
     <>
       <div className="assistant">
@@ -16,9 +31,18 @@ function Assistant() {
             <label className="infoLabel">2313123</label>
           </div>
           <div className="btnGroup">
-            <button type="submit">Müşteri Çağrı Listesi Menüsü</button>
-            <button type="submit">Aylık Prim Listesi Menüsü</button>
-            <button type="submit">Prim İtiraz Listesi Menüsü</button>
+            <button onClick={handleClickOnCallListBtn} type="submit">
+              Müşteri Çağrı Listesi Menüsü
+            </button>
+            <button onClick={handleClickOnMountlyBonusListBtn} type="submit">
+              Aylık Prim Listesi Menüsü
+            </button>
+            <button
+              onClick={handleClickOnBonusDisapprovalListBtn}
+              type="submit"
+            >
+              Prim İtiraz Listesi Menüsü
+            </button>
           </div>
         </div>
       </div>
