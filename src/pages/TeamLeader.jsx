@@ -5,6 +5,7 @@ import "./TeamLeader.scss";
 
 function TeamLeader() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen2, setIsModalOpen2] = useState(false);
   const [status, setStatus] = useState("WAITING");
   const textAreaRef = useRef(null);
 
@@ -33,6 +34,19 @@ function TeamLeader() {
     console.log("Selected:", e);
     setStatus(e);
   };
+
+  const showModal2 = () => {
+    setIsModalOpen2(true);
+  };
+
+  const handleOk2 = () => {
+    setIsModalOpen2(false);
+  };
+
+  const handleCancel2 = () => {
+    setIsModalOpen2(false);
+  };
+
   return (
     <>
       <Modal
@@ -66,6 +80,32 @@ function TeamLeader() {
           />
         </div>
       </Modal>
+      <Modal
+        open={isModalOpen2}
+        destroyOnClose={true}
+        title="İtiraz Cevap Menüsü"
+        onOk={handleOk2}
+        onCancel={handleCancel2}
+        footer={[
+          <Button key="back" onClick={handleCancel2}>
+            İptal
+          </Button>,
+          <Button key="submit" type="primary" onClick={handleOk2}>
+            Ekle
+          </Button>,
+        ]}
+      >
+        <p>Asistan Adı:</p>
+        <Input />
+        <p>Sicil No:</p>
+        <Input />
+        <p>E-Posta:</p>
+        <Input />
+        <p>Kullanıcı Adı:</p>
+        <Input />
+        <p>Şifre:</p>
+        <Input />
+      </Modal>
       <div className="myJobs">
         <div className="container">
           <h1>Takım Lideri Anasayfası</h1>
@@ -77,7 +117,12 @@ function TeamLeader() {
             <label htmlFor="">Sicil No: </label>
             <label className="infoLabel">2313123</label>
           </div>
-          <h2>Prim İtiraz Listesi: </h2>
+          <div className="title">
+            <h2>Prim İtiraz Listesi: </h2>
+            <button style={{ maxHeight: "50px" }} onClick={showModal2}>
+              Asistan Ekle
+            </button>
+          </div>
           <div className="title">
             <table>
               <thead>
