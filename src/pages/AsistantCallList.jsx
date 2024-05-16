@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Modal, Input, Select } from "antd";
 import "./AssistantCallList.scss";
+import { getRequest, getRequestForThemselves } from "../api/apiCall";
 
 function AssistantCallList() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [status, setStatus] = useState("Following");
   const [subject, setSubject] = useState("Request");
+  const [callList, setCallList] = useState([]);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -36,6 +38,15 @@ function AssistantCallList() {
   const handleCustomerName = (e) => {
     console.log("Customer Name:", e.target.value);
   };
+ const fetchData = async ()=>{
+ const response = await getRequestForThemselves(
+      "/api/calls/my-calls"
+   ); 
+    setCallList(response);
+}
+  useEffect(() => {
+   fetchData();
+  }, []);
 
   return (
     <>
@@ -114,14 +125,17 @@ function AssistantCallList() {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>nazmi yazkan</td>
-                  <td>arıza</td>
-                  <td>123123</td>
-                  <td>12</td>
-                  <td>13</td>
+                {callList ? callList.map(call => {
+                  (       <tr>
+                  <td>{call.customerName}</td>
+                  <td>arıza2</td>
+                  <td>45645</td>
+                  <td>11</td>
+                  <td>14</td>
                   <td>bekliyor</td>
-                </tr>
+                </tr>)
+                }):"yok"}
+                
                 <tr>
                   <td>armagan</td>
                   <td>arıza2</td>
