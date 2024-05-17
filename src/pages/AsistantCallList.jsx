@@ -1,21 +1,53 @@
 import { useEffect, useState } from "react";
 import { Button, Modal, Input, Select } from "antd";
 import "./AssistantCallList.scss";
-import { getRequest, getRequestForThemselves } from "../api/apiCall";
+import {
+  getRequest,
+  getRequestForThemselves,
+  postRequest,
+} from "../api/apiCall";
+import {
+  COMPLETED,
+  FOLLOWING,
+  NO_SOLUTION,
+  REQUEST,
+} from "../constants/constants";
 
 function AssistantCallList() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [status, setStatus] = useState("Following");
-  const [subject, setSubject] = useState("Request");
+  const [customerName, setCustomerName] = useState("");
+  const [status, setStatus] = useState(COMPLETED);
+  const [subject, setSubject] = useState(REQUEST);
+  const [startDateTime, setStartDateTime] = useState("");
+  const [endDateTime, setEndDateTime] = useState("");
   const [callList, setCallList] = useState([]);
+  const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
 
   const showModal = () => {
     setIsModalOpen(true);
   };
+  const localUser = { id: 1 };
 
-  const handleOk = () => {
-    setSubject("Request");
-    setStatus("WAITING");
+  const handleNewCall = async () => {
+    const data = {
+      assistantId: localUser.id,
+      customerName,
+      callSubject: subject,
+      startDateTime,
+      endDateTime,
+      status: status,
+    };
+
+    const response = await postRequest("/calls", data);
+
+    if (response.status === 200) {
+      setSuccess("Başarılı");
+      fetchData();
+    } else {
+      setError(response.data.message);
+    }
+
     setIsModalOpen(false);
   };
 
@@ -36,31 +68,32 @@ function AssistantCallList() {
   };
 
   const handleCustomerName = (e) => {
-    console.log("Customer Name:", e.target.value);
+    setCustomerName(e.target.value);
   };
- const fetchData = async ()=>{
- const response = await getRequestForThemselves(
-      "/api/calls/my-calls"
-   ); 
-    setCallList(response);
-}
+  const fetchData = async () => {
+    const response = await getRequestForThemselves("/calls/my-calls");
+
+    setCallList(response.data);
+  };
   useEffect(() => {
-   fetchData();
+    fetchData();
   }, []);
 
   return (
     <>
+      {success && <div style={{ color: "green" }}>{success}</div>}
+      {error && <div style={{ color: "red" }}>{error}</div>}
       <Modal
         open={isModalOpen}
         destroyOnClose={true}
         title="Yeni Çağrı"
-        onOk={handleOk}
+        onOk={handleNewCall}
         onCancel={handleCancel}
         footer={[
           <Button key="back" onClick={handleCancel}>
             İptal
           </Button>,
-          <Button key="submit" type="primary" onClick={handleOk}>
+          <Button key="submit" type="primary" onClick={handleNewCall}>
             Gönder
           </Button>,
         ]}
@@ -74,18 +107,24 @@ function AssistantCallList() {
             style={{ width: 150 }}
             onChange={handleSelectChangeSubject}
             options={[
-              { value: "Fault", label: "Arıza" },
-              { value: "Request", label: "Talep" },
-              { value: "Information", label: "Bilgi Alma" },
+              { value: "FAULT", label: "Arıza" },
+              { value: "REQUEST", label: "Talep" },
+              { value: "INFORMATION", label: "Bilgi Alma" },
             ]}
           />
         </div>
         <p>Görüşme Tarihi:</p>
         <Input />
         <p>Görüşme Başlama Saati:</p>
-        <Input />
+        <Input
+          type="datetime"
+          onChange={(e) => setStartDateTime(e.target.value)}
+        />
         <p>Görüşme Bitiş Saati:</p>
-        <Input />
+        <Input
+          type="datetime"
+          onChange={(e) => setEndDateTime(e.target.value)}
+        />
         <div>
           <p>Görüşme Durumu: </p>
           <Select
@@ -93,9 +132,9 @@ function AssistantCallList() {
             style={{ width: 150 }}
             onChange={handleSelectChangeStatus}
             options={[
-              { value: "Completed", label: "Tamamlandı" },
-              { value: "Following", label: "Takip Ediliyor" },
-              { value: "No Solution", label: "Sorun Çözülemedi" },
+              { value: COMPLETED, label: "Tamamlandı" },
+              { value: FOLLOWING, label: "Takip Ediliyor" },
+              { value: NO_SOLUTION, label: "Sorun Çözülemedi" },
             ]}
           />
         </div>
@@ -118,32 +157,27 @@ function AssistantCallList() {
                 <tr>
                   <th>Müşteri Adı Soyadı</th>
                   <th>Görüşme Konusu</th>
-                  <th>Görüşme Tarihi</th>
-                  <th>Görüşme Başlama Saati</th>
-                  <th>Görüşme Bitiş Saati</th>
+                  <th>Görüşme Başlangıç</th>
+                  <th>Görüşme Bitiş</th>
                   <th>Görüşme Durumu</th>
                 </tr>
               </thead>
               <tbody>
-                {callList ? callList.map(call => {
-                  (       <tr>
-                  <td>{call.customerName}</td>
-                  <td>arıza2</td>
-                  <td>45645</td>
-                  <td>11</td>
-                  <td>14</td>
-                  <td>bekliyor</td>
-                </tr>)
-                }):"yok"}
-                
-                <tr>
-                  <td>armagan</td>
-                  <td>arıza2</td>
-                  <td>45645</td>
-                  <td>11</td>
-                  <td>14</td>
-                  <td>bekliyor</td>
-                </tr>
+                {callList && callList.length > 0 ? (
+                  callList.map((call, index) => (
+                    <tr key={index}>
+                      <td>{call.customerName}</td>
+                      <td>{call.callSubject}</td>
+                      <td>{call.startDateTime}</td>
+                      <td>{call.endDateTime}</td>
+                      <td>{call.status}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="5">Yok</td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
