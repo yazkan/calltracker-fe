@@ -1,16 +1,14 @@
 import { useEffect, useState } from "react";
 import { Button, Modal, Input, Select } from "antd";
 import "./AssistantCallList.scss";
-import {
-  getRequest,
-  postRequest,
-} from "../api/apiCall";
+import { getRequest, postRequest } from "../api/apiCall";
 import {
   COMPLETED,
   FOLLOWING,
   NO_SOLUTION,
   REQUEST,
 } from "../constants/constants";
+import { useNavigate } from "react-router-dom";
 
 function AssistantCallList() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,6 +22,7 @@ function AssistantCallList() {
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
   const user = JSON.parse(localStorage.getItem("currentUser"));
+  const navigate = useNavigate();
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -35,7 +34,7 @@ function AssistantCallList() {
       assistantId: localUser.id,
       customerName,
       callSubject: subject,
-      date:new Date(date).getTime(),
+      date: new Date(date).getTime(),
       startTime,
       endTime,
       status,
@@ -73,8 +72,18 @@ function AssistantCallList() {
   const handleCustomerName = (e) => {
     setCustomerName(e.target.value);
   };
+
+  const handleExit = () => {
+    localStorage.removeItem("currentUser");
+    navigate("/");
+  };
+
+  const handleBack = () => {
+    navigate("/assistant");
+  };
+
   const fetchData = async () => {
-    const response = await getRequest("/calls/my-calls/"+localUser.id);
+    const response = await getRequest("/calls/my-calls/" + localUser.id);
     setCallList(response.data);
   };
   useEffect(() => {
@@ -145,6 +154,12 @@ function AssistantCallList() {
           <div>
             <label htmlFor="">Sicil No: </label>
             <label className="infoLabel">{user.ssn}</label>
+          </div>
+          <div style={{ margin: "10px 0px" }} className="title">
+            <button onClick={handleBack}>Geri Dön</button>
+            <div className="exit">
+              <button onClick={handleExit}>Çıkış Yap</button>
+            </div>
           </div>
           <h2>Çağrı Listesi: </h2>
           <div className="title">

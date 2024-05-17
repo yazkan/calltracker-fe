@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { getRequest, postRequest } from '../api/apiCall';
-import { Button, Modal } from 'antd';
-import TextArea from 'antd/es/input/TextArea';
+import { useState, useEffect, useRef } from "react";
+import { getRequest, postRequest } from "../api/apiCall";
+import { Button, Modal } from "antd";
+import TextArea from "antd/es/input/TextArea";
+import { useNavigate } from "react-router-dom";
 
 function MontlyBonusList() {
   const user = JSON.parse(localStorage.getItem("currentUser"));
+  const navigate = useNavigate();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const textAreaRef = useRef(null);
@@ -18,7 +20,16 @@ function MontlyBonusList() {
   const isDisputed = async (id) => {
     const response = await getRequest(`/disapprovals/isDisputed/${id}`);
     console.log("🚀 ~ isDisputed ~ response:", response.data);
-    return response.data; 
+    return response.data;
+  };
+
+  const handleExit = () => {
+    localStorage.removeItem("currentUser");
+    navigate("/");
+  };
+
+  const handleBack = () => {
+    navigate("/assistant");
   };
 
   const handleOk = async () => {
@@ -35,7 +46,7 @@ function MontlyBonusList() {
   };
 
   const findMaxId = () => {
-    if (monthlyBonusList.length === 0) return null; 
+    if (monthlyBonusList.length === 0) return null;
 
     return monthlyBonusList.reduce((maxItem, currentItem) => {
       return currentItem.datetime > maxItem.datetime ? currentItem : maxItem;
@@ -47,7 +58,7 @@ function MontlyBonusList() {
   };
 
   const fetchData = async () => {
-    const response = await getRequest("/monthly-prizes/my-prizes/"+user.id);
+    const response = await getRequest("/monthly-prizes/my-prizes/" + user.id);
     setMonthlyBonusList(response.data);
   };
 
@@ -92,11 +103,17 @@ function MontlyBonusList() {
           <h1>Asistan Aylık Prim Listesi</h1>
           <div>
             <label htmlFor="">Asistan Adı: </label>
-            <label className="infoLabel">Nazmi Yazkan</label>
+            <label className="infoLabel">{user.fullName}</label>
           </div>
           <div>
             <label htmlFor="">Sicil No: </label>
-            <label className="infoLabel">2313123</label>
+            <label className="infoLabel">{user.ssn}</label>
+          </div>
+          <div style={{ margin: "10px 0px" }} className="title">
+            <button onClick={handleBack}>Geri Dön</button>
+            <div className="exit">
+              <button onClick={handleExit}>Çıkış Yap</button>
+            </div>
           </div>
           <h2>Prim Listesi: </h2>
           <div className="title">

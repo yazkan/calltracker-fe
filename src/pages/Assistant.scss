@@ -42,6 +42,20 @@
     button:hover {
       background-color: #45df57;
     }
+    .exit {
+      button {
+        border: none;
+        padding: 20px;
+        color: white;
+        font-weight: 500;
+        font-size: 18px;
+        background-color: #f37328;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #f84b4b;
+      }
+    }
 
     .btnGroup {
       margin-top: 100px;

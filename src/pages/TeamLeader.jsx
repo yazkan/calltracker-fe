@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button, Modal, Input, Select } from "antd";
 const { TextArea } = Input;
 import { getRequest, postRequest, putRequest } from "../api/apiCall";
@@ -18,6 +19,7 @@ function TeamLeader() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [answeredDisapprovalId, setAnsweredDisapprovalId] = useState(null);
+  const navigate = useNavigate();
 
   const fetchData = async () => {
     const response = await getRequest(
@@ -74,6 +76,11 @@ function TeamLeader() {
     console.log(response);
     setAddAssistantResponse(response);
     setIsModalOpen2(false);
+  };
+
+  const handleExit = () => {
+    localStorage.removeItem("currentUser");
+    navigate("/");
   };
 
   const handleCancel2 = () => {
@@ -173,9 +180,18 @@ function TeamLeader() {
           </div>
           <div className="title">
             <h2>Prim İtiraz Listesi: </h2>
-            <button style={{ maxHeight: "50px" }} onClick={showModal2}>
-              Asistan Ekle
-            </button>
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+            >
+              <div className="exit">
+                <button style={{ maxHeight: "50px" }} onClick={handleExit}>
+                  Çıkış Yap
+                </button>
+              </div>
+              <button style={{ maxHeight: "50px" }} onClick={showModal2}>
+                Asistan Ekle
+              </button>
+            </div>
           </div>
           <div className="title">
             <table>

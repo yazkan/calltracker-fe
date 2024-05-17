@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { getRequest, postRequest } from "../api/apiCall";
+import { getRequest } from "../api/apiCall";
 import "./AssistantBonusDisapproval.scss";
+import { useNavigate } from "react-router-dom";
 
 function AssistantBonusDisapproval() {
   const [bonusDisapprovalsList, setBonusDisapprovalsList] = useState([]);
   const user = JSON.parse(localStorage.getItem("currentUser"));
+  const navigate = useNavigate();
 
   const fetchData = async () => {
     const response = await getRequest(
@@ -16,6 +18,15 @@ function AssistantBonusDisapproval() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const handleExit = () => {
+    localStorage.removeItem("currentUser");
+    navigate("/");
+  };
+
+  const handleBack = () => {
+    navigate("/assistant");
+  };
 
   return (
     <>
@@ -29,6 +40,12 @@ function AssistantBonusDisapproval() {
           <div>
             <label htmlFor="">Sicil No: </label>
             <label className="infoLabel">{user.ssn}</label>
+          </div>
+          <div style={{ margin: "10px 0px" }} className="title">
+            <button onClick={handleBack}>Geri Dön</button>
+            <div className="exit">
+              <button onClick={handleExit}>Çıkış Yap</button>
+            </div>
           </div>
           <h2>Prim İtiraz Listesi: </h2>
           <div className="title">

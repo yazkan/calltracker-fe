@@ -16,6 +16,11 @@ function Assistant() {
     navigate("/bonusdisapp");
   };
 
+  const handleExit = () => {
+    localStorage.removeItem("currentUser");
+    navigate("/");
+  };
+
   return (
     <>
       <div className="assistant">
@@ -43,6 +48,12 @@ function Assistant() {
             >
               Prim İtiraz Listesi Menüsü
             </button>
+          </div>
+          <div
+            className="exit"
+            style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+          >
+            <button onClick={handleExit}>Çıkış Yap</button>
           </div>
         </div>
       </div>
