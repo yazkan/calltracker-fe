@@ -1,6 +1,22 @@
+import { useEffect, useState } from "react";
+import { getRequest } from "../api/apiCall";
 import "./AssistantBonusDisapproval.scss";
 
 function AssistantBonusDisapproval() {
+  const [bonusDisapprovalsList, setBonusDisapprovalsList] = useState([]);
+  const user = JSON.parse(localStorage.getItem("currentUser"));
+
+  const fetchData = async () => {
+    const response = await getRequest(
+      "/disapprovals/my-disapprovals/assistant/" + user.id
+    );
+    setBonusDisapprovalsList(response.data);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <>
       <div className="myJobs">
@@ -8,11 +24,11 @@ function AssistantBonusDisapproval() {
           <h1>Asistan Prim İtiraz Listesi (İtirazlarım)</h1>
           <div>
             <label htmlFor="">Asistan Adı: </label>
-            <label className="infoLabel">Nazmi Yazkan</label>
+            <label className="infoLabel">{user.fullName}</label>
           </div>
           <div>
             <label htmlFor="">Sicil No: </label>
-            <label className="infoLabel">2313123</label>
+            <label className="infoLabel">{user.ssn}</label>
           </div>
           <h2>Prim İtiraz Listesi: </h2>
           <div className="title">
@@ -26,18 +42,22 @@ function AssistantBonusDisapproval() {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>itiraz açıklaması</td>
-                  <td>takım liderinin verdiği cevap</td>
-                  <td>mart</td>
-                  <td>Onaylandı</td>
-                </tr>
-                <tr>
-                  <td>itiraz açıklaması2</td>
-                  <td>takım lideri cevap</td>
-                  <td>nisan</td>
-                  <td>Reddedildi</td>
-                </tr>
+                {bonusDisapprovalsList &&
+                  bonusDisapprovalsList.map((bonusDisapproval, index) => (
+                    <tr key={index}>
+                      <td>{bonusDisapproval.reason}</td>
+                      <td>{bonusDisapproval.teamLeadResponse}</td>
+                      <td>
+                        {new Date(
+                          bonusDisapproval.disputedTo
+                        ).toLocaleDateString("tr-TR", {
+                          month: "long",
+                          year: "numeric",
+                        })}
+                      </td>
+                      <td>{bonusDisapproval.status}</td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>

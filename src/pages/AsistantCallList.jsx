@@ -23,6 +23,7 @@ function AssistantCallList() {
   const [callList, setCallList] = useState([]);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
+  const user = JSON.parse(localStorage.getItem("currentUser"));
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -36,10 +37,11 @@ function AssistantCallList() {
       callSubject: subject,
       startDateTime,
       endDateTime,
-      status: status,
+      status,
     };
 
     const response = await postRequest("/calls", data);
+    console.log("data", data);
 
     if (response.status === 200) {
       setSuccess("Başarılı");
@@ -52,8 +54,8 @@ function AssistantCallList() {
   };
 
   const handleCancel = () => {
-    setSubject("Request");
-    setStatus("WAITING");
+    setSubject(REQUEST);
+    setStatus(FOLLOWING);
     setIsModalOpen(false);
   };
 
@@ -144,11 +146,11 @@ function AssistantCallList() {
           <h1>Müşteri Çağrı Listesi Menüsü</h1>
           <div>
             <label htmlFor="">Asistan Adı: </label>
-            <label className="infoLabel">Nazmi Yazkan</label>
+            <label className="infoLabel">{user.fullName}</label>
           </div>
           <div>
             <label htmlFor="">Sicil No: </label>
-            <label className="infoLabel">2313123</label>
+            <label className="infoLabel">{user.ssn}</label>
           </div>
           <h2>Çağrı Listesi: </h2>
           <div className="title">
@@ -157,8 +159,8 @@ function AssistantCallList() {
                 <tr>
                   <th>Müşteri Adı Soyadı</th>
                   <th>Görüşme Konusu</th>
-                  <th>Görüşme Başlangıç</th>
-                  <th>Görüşme Bitiş</th>
+                  <th>Görüşme Başlangıç Saati</th>
+                  <th>Görüşme Bitiş Saati</th>
                   <th>Görüşme Durumu</th>
                 </tr>
               </thead>
