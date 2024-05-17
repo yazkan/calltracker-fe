@@ -19,12 +19,15 @@ function TeamLeader() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [answeredDisapprovalId, setAnsweredDisapprovalId] = useState(null);
+  const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const fetchData = async () => {
     const response = await getRequest(
       "/disapprovals/my-disapprovals/team-lead/" + user.id
     );
+   
     setBonusDisapprovalsList(response.data);
   };
 
@@ -64,8 +67,8 @@ function TeamLeader() {
     setIsModalOpen2(true);
   };
 
-  const handleOk2 = () => {
-    const response = postRequest("/users/addAssistant", {
+  const handleOk2 = async () => {
+    const response = await postRequest("/users/addAssistant", {
       fullName: fullName,
       username: username,
       password: password,
@@ -76,6 +79,11 @@ function TeamLeader() {
     console.log(response);
     setAddAssistantResponse(response);
     setIsModalOpen2(false);
+      if (response.status === 200) {
+        setSuccess("Başarılı");
+      } else {
+        setError(response.data.message);
+      }
   };
 
   const handleExit = () => {
@@ -192,6 +200,13 @@ function TeamLeader() {
                 Asistan Ekle
               </button>
             </div>
+          </div>
+          <div
+            style={{ marginLeft: "50%", fontSize: "20px", fontWeight: "bold" }}
+          >
+            {" "}
+            {success && <div style={{ color: "green" }}>{success}</div>}
+            {error && <div style={{ color: "red" }}>{error}</div>}
           </div>
           <div className="title">
             <table>

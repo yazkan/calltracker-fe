@@ -92,8 +92,6 @@ function AssistantCallList() {
 
   return (
     <>
-      {success && <div style={{ color: "green" }}>{success}</div>}
-      {error && <div style={{ color: "red" }}>{error}</div>}
       <Modal
         open={isModalOpen}
         destroyOnClose={true}
@@ -143,10 +141,10 @@ function AssistantCallList() {
             ]}
           />
         </div>
-      </Modal>
+      </Modal>{" "}
       <div className="callList">
         <div className="container">
-          <h1>Müşteri Çağrı Listesi Menüsü</h1>
+          <h1>Müşteri Çağrı Listesi Menüsü</h1>{" "}
           <div>
             <label htmlFor="">Asistan Adı: </label>
             <label className="infoLabel">{user.fullName}</label>
@@ -160,6 +158,11 @@ function AssistantCallList() {
             <div className="exit">
               <button onClick={handleExit}>Çıkış Yap</button>
             </div>
+          </div>
+          <div style={{marginLeft:"50%",fontSize:"20px",fontWeight:"bold"}}>
+            {" "}
+            {success && <div style={{ color: "green" }}>{success}</div>}
+            {error && <div style={{ color: "red" }}>{error}</div>}
           </div>
           <h2>Çağrı Listesi: </h2>
           <div className="title">

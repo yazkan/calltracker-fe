@@ -43,6 +43,7 @@ function MontlyBonusList() {
     const response = await postRequest("/disapprovals", data);
 
     setIsModalOpen(false);
+    window.location.reload();
   };
 
   const findMaxId = () => {
