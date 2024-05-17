@@ -76,7 +76,6 @@ function AssistantCallList() {
   };
   const fetchData = async () => {
     const response = await getRequestForThemselves("/calls/my-calls");
-
     setCallList(response.data);
   };
   useEffect(() => {
