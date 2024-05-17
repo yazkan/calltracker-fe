@@ -18,8 +18,9 @@ function AssistantCallList() {
   const [customerName, setCustomerName] = useState("");
   const [status, setStatus] = useState(COMPLETED);
   const [subject, setSubject] = useState(REQUEST);
-  const [startDateTime, setStartDateTime] = useState("");
-  const [endDateTime, setEndDateTime] = useState("");
+  const [date, setDate] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
   const [callList, setCallList] = useState([]);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
@@ -35,8 +36,9 @@ function AssistantCallList() {
       assistantId: localUser.id,
       customerName,
       callSubject: subject,
-      startDateTime,
-      endDateTime,
+      date,
+      startTime,
+      endTime,
       status,
     };
 
@@ -116,17 +118,11 @@ function AssistantCallList() {
           />
         </div>
         <p>Görüşme Tarihi:</p>
-        <Input />
+        <Input type="date" onChange={(e) => setDate(e.target.value)} />
         <p>Görüşme Başlama Saati:</p>
-        <Input
-          type="datetime"
-          onChange={(e) => setStartDateTime(e.target.value)}
-        />
+        <Input type="time" onChange={(e) => setStartTime(e.target.value)} />
         <p>Görüşme Bitiş Saati:</p>
-        <Input
-          type="datetime"
-          onChange={(e) => setEndDateTime(e.target.value)}
-        />
+        <Input type="time" onChange={(e) => setEndTime(e.target.value)} />
         <div>
           <p>Görüşme Durumu: </p>
           <Select
@@ -159,6 +155,7 @@ function AssistantCallList() {
                 <tr>
                   <th>Müşteri Adı Soyadı</th>
                   <th>Görüşme Konusu</th>
+                  <th>Görüşme Tarihi</th>
                   <th>Görüşme Başlangıç Saati</th>
                   <th>Görüşme Bitiş Saati</th>
                   <th>Görüşme Durumu</th>
@@ -170,8 +167,15 @@ function AssistantCallList() {
                     <tr key={index}>
                       <td>{call.customerName}</td>
                       <td>{call.callSubject}</td>
-                      <td>{call.startDateTime}</td>
-                      <td>{call.endDateTime}</td>
+                      <td>
+                        {new Date(call.date).toLocaleDateString("tr-TR", {
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric",
+                        })}
+                      </td>
+                      <td>{call.startTime}</td>
+                      <td>{call.endTime}</td>
                       <td>{call.status}</td>
                     </tr>
                   ))
