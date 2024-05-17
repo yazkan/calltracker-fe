@@ -35,7 +35,7 @@ function AssistantCallList() {
       assistantId: localUser.id,
       customerName,
       callSubject: subject,
-      date,
+      date:new Date(date).getTime(),
       startTime,
       endTime,
       status,
