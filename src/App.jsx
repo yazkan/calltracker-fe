@@ -7,12 +7,14 @@ import Register from "./pages/Register";
 import AssistantCallList from "./pages/AsistantCallList";
 import MontlyBonusList from "./pages/MontlyBonusList";
 import LoginTeamLeader from "./pages/LoginTeamLeader";
+import Mainpage from "./pages/Mainpage";
 
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<Mainpage />} />
           <Route path="/loginteamleader" element={<LoginTeamLeader />} />
           <Route path="/loginassistant" element={<LoginAssistant />} />
           <Route path="/register" element={<Register />} />
