@@ -12,16 +12,14 @@ function LoginAssistant() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/users/assistantLogin", {
+      const res = await axios.post("/users/teamLeadLogin", {
         username: username,
         password: password,
       });
-      console.log(res);
       localStorage.setItem(
         "currentUser",
         JSON.stringify(res.data ? res.data : null)
       );
-      console.log(res.data);
       if (res.data) {
         navigate("/teamleader");
       } else {

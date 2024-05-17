@@ -3,7 +3,7 @@ import "./Assistant.scss";
 
 function Assistant() {
   const navigate = useNavigate();
-
+  const user = JSON.parse(localStorage.getItem("currentUser"));
   const handleClickOnCallListBtn = () => {
     navigate("/assistantcalllist");
   };
@@ -23,12 +23,12 @@ function Assistant() {
           <h1>Asistan Anasayfası</h1>
           <div>
             <label htmlFor="">Asistan Adı: </label>
-            <label className="infoLabel">Nazmi Yazkan</label>
+            <label className="infoLabel">{user.fullName}</label>
           </div>
 
           <div>
             <label htmlFor="">Sicil No: </label>
-            <label className="infoLabel">2313123</label>
+            <label className="infoLabel">{user.ssn}</label>
           </div>
           <div className="btnGroup">
             <button onClick={handleClickOnCallListBtn} type="submit">

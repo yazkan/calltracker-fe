@@ -16,12 +16,10 @@ function LoginAssistant() {
         username: username,
         password: password,
       });
-      console.log(res);
       localStorage.setItem(
         "currentUser",
         JSON.stringify(res.data ? res.data : null)
       );
-      console.log(res.data);
       if (res.data) {
         navigate("/assistant");
       } else {

@@ -4,6 +4,7 @@ const { TextArea } = Input;
 import "./TeamLeader.scss";
 
 function TeamLeader() {
+  const user = JSON.parse(localStorage.getItem("currentUser"));
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
   const [status, setStatus] = useState("WAITING");
@@ -111,11 +112,11 @@ function TeamLeader() {
           <h1>Takım Lideri Anasayfası</h1>
           <div>
             <label htmlFor="">Takım Lideri Adı: </label>
-            <label className="infoLabel">Nazmi Yazkan</label>
+            <label className="infoLabel">{user.fullName}</label>
           </div>
           <div>
             <label htmlFor="">Sicil No: </label>
-            <label className="infoLabel">2313123</label>
+            <label className="infoLabel">{user.ssn}</label>
           </div>
           <div className="title">
             <h2>Prim İtiraz Listesi: </h2>
