@@ -42,7 +42,7 @@ function AssistantBonusDisapproval() {
                 </tr>
               </thead>
               <tbody>
-                {bonusDisapprovalsList &&
+                {bonusDisapprovalsList ? (
                   bonusDisapprovalsList.map((bonusDisapproval, index) => (
                     <tr key={index}>
                       <td>{bonusDisapproval.reason}</td>
@@ -57,7 +57,12 @@ function AssistantBonusDisapproval() {
                       </td>
                       <td>{bonusDisapproval.status}</td>
                     </tr>
-                  ))}
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="5">Yok</td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>

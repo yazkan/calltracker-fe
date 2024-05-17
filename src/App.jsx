@@ -3,7 +3,6 @@ import Assistant from "./pages/Assistant";
 import TeamLeader from "./pages/TeamLeader";
 import AssistantBonusDisapproval from "./pages/AssistantBonusDisapproval";
 import LoginAssistant from "./pages/LoginAssistant";
-import Register from "./pages/Register";
 import AssistantCallList from "./pages/AsistantCallList";
 import MontlyBonusList from "./pages/MontlyBonusList";
 import LoginTeamLeader from "./pages/LoginTeamLeader";
@@ -17,7 +16,6 @@ function App() {
           <Route path="/" element={<Mainpage />} />
           <Route path="/loginteamleader" element={<LoginTeamLeader />} />
           <Route path="/loginassistant" element={<LoginAssistant />} />
-          <Route path="/register" element={<Register />} />
           <Route path="/assistant" element={<Assistant />} />
           <Route path="/teamleader" element={<TeamLeader />} />
           <Route path="/bonusdisapp" element={<AssistantBonusDisapproval />} />

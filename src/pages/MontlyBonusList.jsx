@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { getRequest, getRequestForThemselves, postRequest } from '../api/apiCall'; // API fonksiyonlarınızın doğru yollarını ekleyin
+import { getRequest, postRequest } from '../api/apiCall';
 import { Button, Modal } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 
@@ -18,7 +18,7 @@ function MontlyBonusList() {
   const isDisputed = async (id) => {
     const response = await getRequest(`/disapprovals/isDisputed/${id}`);
     console.log("🚀 ~ isDisputed ~ response:", response.data);
-    return response.data; // Assuming response.data is a boolean indicating dispute status
+    return response.data; 
   };
 
   const handleOk = async () => {
@@ -35,7 +35,7 @@ function MontlyBonusList() {
   };
 
   const findMaxId = () => {
-    if (monthlyBonusList.length === 0) return null; // Handle empty list case
+    if (monthlyBonusList.length === 0) return null; 
 
     return monthlyBonusList.reduce((maxItem, currentItem) => {
       return currentItem.datetime > maxItem.datetime ? currentItem : maxItem;
@@ -47,7 +47,7 @@ function MontlyBonusList() {
   };
 
   const fetchData = async () => {
-    const response = await getRequestForThemselves("/monthly-prizes/my-prizes");
+    const response = await getRequest("/monthly-prizes/my-prizes/"+user.id);
     setMonthlyBonusList(response.data);
   };
 

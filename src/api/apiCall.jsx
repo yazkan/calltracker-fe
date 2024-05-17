@@ -1,6 +1,6 @@
 import axios from "axios";
 //const localUser = JSON.parse(localStorage.getItem("userInfo"));
-const localUser = { id: 1 };
+const localUser = JSON.parse(localStorage.getItem("currentUser"));
 export const postRequest = async (url, body) => {
   return await axios.post(url, body);
 };
@@ -11,9 +11,4 @@ export const putRequest = async (url, body) => {
   return await axios.put(url, body);
 };
 
-export const postRequestForThemselves = async (url, body) => {
-  return await axios.post(url + localUser.id, body);
-};
-export const getRequestForThemselves = async (url, body) => {
-  return await axios.get(url + "/" + localUser.id, body);
-};
+

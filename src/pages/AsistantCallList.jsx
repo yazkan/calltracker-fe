@@ -3,7 +3,6 @@ import { Button, Modal, Input, Select } from "antd";
 import "./AssistantCallList.scss";
 import {
   getRequest,
-  getRequestForThemselves,
   postRequest,
 } from "../api/apiCall";
 import {
@@ -29,7 +28,7 @@ function AssistantCallList() {
   const showModal = () => {
     setIsModalOpen(true);
   };
-  const localUser = { id: 1 };
+  const localUser = JSON.parse(localStorage.getItem("currentUser"));
 
   const handleNewCall = async () => {
     const data = {
@@ -75,7 +74,7 @@ function AssistantCallList() {
     setCustomerName(e.target.value);
   };
   const fetchData = async () => {
-    const response = await getRequestForThemselves("/calls/my-calls");
+    const response = await getRequest("/calls/my-calls/"+localUser.id);
     setCallList(response.data);
   };
   useEffect(() => {
