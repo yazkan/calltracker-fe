@@ -34,10 +34,10 @@ function LoginAssistant() {
     <div className="containerlogin">
       <div className="login-form">
         {error && <div style={{ color: "red" }}>{error}</div>}
-        <h2>Proje Prim Takip Sistemi Takım Lideri Girişi</h2>
+        <h2>Call Tracker Takım Lideri Girişi</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="username">Kullanıcı Adı</label>
+            <label htmlFor="username">Kullanıcı Adı:</label>
             <input
               name="username"
               type="text"
@@ -47,7 +47,7 @@ function LoginAssistant() {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="password">Şifre</label>
+            <label htmlFor="password">Şifre:</label>
             <input
               name="password"
               type="password"
