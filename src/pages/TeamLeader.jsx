@@ -1,29 +1,51 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button, Modal, Input, Select } from "antd";
 const { TextArea } = Input;
+import { getRequest, postRequest, putRequest } from "../api/apiCall";
 import "./TeamLeader.scss";
 
 function TeamLeader() {
+  const [bonusDisapprovalsList, setBonusDisapprovalsList] = useState([]);
   const user = JSON.parse(localStorage.getItem("currentUser"));
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
+  const [addAssistantResponse, setAddAssistantResponse] = useState(null);
   const [status, setStatus] = useState("WAITING");
   const textAreaRef = useRef(null);
+  const [fullName, setFullName] = useState("");
+  const [ssn, setSSN] = useState("");
+  const [mail, setMail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [answeredDisapprovalId, setAnsweredDisapprovalId] = useState(null);
+
+  const fetchData = async () => {
+    const response = await getRequest(
+      "/disapprovals/my-disapprovals/team-lead/" + user.id
+    );
+    setBonusDisapprovalsList(response.data);
+  };
+
+  useEffect(() => {
+    fetchData();
+    console.log(bonusDisapprovalsList);
+  }, []);
 
   const showModal = () => {
     setIsModalOpen(true);
   };
 
   const handleOk = () => {
-    console.log(status);
-    if (textAreaRef.current) {
-      console.log(
-        "TextArea Content:",
-        textAreaRef.current.resizableTextArea.textArea.value
-      );
-    }
+    const response = putRequest(
+      "/disapprovals/response/" + answeredDisapprovalId,
+      {
+        response: textAreaRef.current.resizableTextArea.textArea.value,
+        status: status,
+      }
+    );
     setStatus("WAITING");
     setIsModalOpen(false);
+    window.location.reload();
   };
 
   const handleCancel = () => {
@@ -41,6 +63,16 @@ function TeamLeader() {
   };
 
   const handleOk2 = () => {
+    const response = postRequest("/users/addAssistant", {
+      fullName: fullName,
+      username: username,
+      password: password,
+      email: mail,
+      ssn: Number(ssn),
+      teamLeadId: user.id,
+    });
+    console.log(response);
+    setAddAssistantResponse(response);
     setIsModalOpen2(false);
   };
 
@@ -84,7 +116,7 @@ function TeamLeader() {
       <Modal
         open={isModalOpen2}
         destroyOnClose={true}
-        title="İtiraz Cevap Menüsü"
+        title="Asistan Ekle"
         onOk={handleOk2}
         onCancel={handleCancel2}
         footer={[
@@ -97,15 +129,36 @@ function TeamLeader() {
         ]}
       >
         <p>Asistan Adı:</p>
-        <Input />
+        <Input
+          onChange={(e) => {
+            setFullName(e.target.value);
+          }}
+        />
         <p>Sicil No:</p>
-        <Input />
+        <Input
+          type="number"
+          onChange={(e) => {
+            setSSN(e.target.value);
+          }}
+        />
         <p>E-Posta:</p>
-        <Input />
+        <Input
+          onChange={(e) => {
+            setMail(e.target.value);
+          }}
+        />
         <p>Kullanıcı Adı:</p>
-        <Input />
+        <Input
+          onChange={(e) => {
+            setUsername(e.target.value);
+          }}
+        />
         <p>Şifre:</p>
-        <Input />
+        <Input
+          onChange={(e) => {
+            setPassword(e.target.value);
+          }}
+        />
       </Modal>
       <div className="myJobs">
         <div className="container">
@@ -133,30 +186,41 @@ function TeamLeader() {
                   <th>İtiraz Açıklaması</th>
                   <th>İtirazın Yapıldığı Ay</th>
                   <th>İtiraz Durumu</th>
+                  <th>İtiraz Cevabı</th>
                   <th></th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>111</td>
-                  <td>nazmi</td>
-                  <td>açıklamaaaa</td>
-                  <td>mart</td>
-                  <td>Bekliyor</td>
-                  <td>
-                    <button onClick={showModal}>İtiraz Cevapla</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>222</td>
-                  <td>armagan</td>
-                  <td>açıklamaaaa2</td>
-                  <td>nisan</td>
-                  <td>Bekliyor</td>
-                  <td>
-                    <button onClick={showModal}>İtiraz Cevapla</button>
-                  </td>
-                </tr>
+                {bonusDisapprovalsList &&
+                  bonusDisapprovalsList.map((bonusDisapproval, index) => (
+                    <tr key={index}>
+                      <td>{bonusDisapproval.assistantId}</td>
+                      <td>{bonusDisapproval.assistantName}</td>
+                      <td>{bonusDisapproval.reason}</td>
+                      <td>
+                        {new Date(
+                          bonusDisapproval.disputedTo
+                        ).toLocaleDateString("tr-TR", {
+                          month: "long",
+                          year: "numeric",
+                        })}
+                      </td>
+                      <td>{bonusDisapproval.status}</td>
+                      <td>{bonusDisapproval.teamLeadResponse}</td>
+                      <td>
+                        {!bonusDisapproval.teamLeadResponse && (
+                          <button
+                            onClick={() => {
+                              setAnsweredDisapprovalId(bonusDisapproval.id);
+                              showModal();
+                            }}
+                          >
+                            İtiraz Cevapla
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>
