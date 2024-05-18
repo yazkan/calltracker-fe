@@ -122,7 +122,8 @@ function MontlyBonusList() {
               <thead>
                 <tr>
                   <th>Prim Tarihi</th>
-                  <th>Cevaplanan Çağrı Sayısı</th>
+                  <th>Aylık Cevaplanan Toplam Çağrı Sayısı</th>
+                  <th>Aylık Cevaplanan Toplam Kısa Çağrı Sayısı </th>
                   <th>Prim Tutarı</th>
                 </tr>
               </thead>
@@ -138,6 +139,7 @@ function MontlyBonusList() {
                         })}
                       </td>
                       <td>{call.answeredCall}</td>
+                      <td>{call.answeredShortCallCount}</td>
                       <td>{call.prizeAmount} TL</td>
                     </tr>
                   ))
