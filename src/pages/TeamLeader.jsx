@@ -48,7 +48,7 @@ function TeamLeader() {
         status: status,
       }
     );
-    setStatus("WAITING");
+  
     setIsModalOpen(false);
     window.location.reload();
   };
